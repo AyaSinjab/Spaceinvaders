@@ -1,5 +1,5 @@
 // GameScreen.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // För navigation till EndScreenimport PauseOverlay from "./PauseOverlay"; // Importera overlay-komponenten
 import PauseOverlay from "./PauseOverlay"; // Importera overlay-komponenten
 
@@ -11,8 +11,21 @@ function GameScreen() {
     navigate("/end"); // Navigerar till EndScreen
   };
 
+    // Prevent scrolling when the component mounts
+    useEffect(() => {
+      document.body.style.margin = "0"; // Remove default margin
+      document.body.style.padding = "0"; // Remove default padding
+      document.body.style.overflow = "hidden"; // Prevent scrolling
+      document.body.style.height = "100%"; // Ensure body takes full height
+      return () => {
+        document.body.style.overflow = "auto"; // Restore scrolling when unmounted
+      };
+    }, []);
+
+
   return (
     <div style={backgroundStyle}>
+
       <button style={pauseButtonStyle} onClick={() => setIsPaused(true)}>
         ⏸
       </button>
@@ -25,7 +38,7 @@ function GameScreen() {
       {/* Lägg till spelkomponenter och innehåll här */}
       {/*Player element*/ }
         <img
-        src={"src/assets/player.png"} // Path to player image
+        src={"src/assets/Spelare.png"} // Path to player image
         alt="Player"
         style={playerStyle}
         />
@@ -41,15 +54,16 @@ function GameScreen() {
 
 // Definiera stilen för bakgrundsbilden
 const backgroundStyle = {
-  backgroundImage: `url(${"src/assets/GameScreen.PNG"})`,
-  backgroundSize: "cover",
+  backgroundImage: `url(${"src/assets/GameBakgrund.png"})`,
+  backgroundSize:"cover" ,
   backgroundPosition: "center",
+  backgroundRepeat: "no-repeat", // Prevents the image from repeating
   height: "100vh",
   width: "100vw",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "white",
+  color: "#bfe9ff",
   position:"relative",//allows aboslute positioning of child elements som t.ex player element
 };
 
@@ -68,8 +82,8 @@ const pauseButtonStyle = {
 //stylea spelarens bild
 const playerStyle={
   position:"absolute",//tillåter justering av spelarens vertikala position mha bottom.
-  bottom:"-50px",//spelarens vertikala position.
-  width:"45%",//spelarens storlek. 
+  bottom:"-210px",//spelarens vertikala position.
+  width:"60%",//spelarens storlek. 
   height:"auto",
 };
 
