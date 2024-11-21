@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import InstructionsOverlay from "./InstructionsOverlay"; // Kontrollera att detta är rätt path
 import { useNavigate } from "react-router-dom"; // Importera för navigation
 
+//haj haj, test komentar
 // Define your component
 function StartScreen() {
   const [showInstructions, setShowInstructions] = useState(false);
@@ -13,8 +14,8 @@ function StartScreen() {
 
   return (
     <div style={backgroundStyle}>
-      {/*Laddade ner en font style och döpte den till Pixelfont. Nu har subtitlen den fonten :) */ }
-           <style>
+      {/*Laddade ner en font style och döpte den till Pixelfont. Nu har subtitlen den fonten :) */}
+      <style>
         {`
           @font-face {
             font-family: 'PixelFont';
@@ -65,7 +66,6 @@ const textContainerStyle = {
   padding: "10px",
   borderRadius: "8px",
   textAlign: "center",
-  
 };
 
 const titleStyle = {
@@ -81,7 +81,6 @@ const subtitleStyle = {
   color: "#E0218A",
   fontFamily: "PixelFont",
   fontSize: "50px", // Sets the font size
-  
 };
 
 //Inställningar för "frågetecken-knappen"
