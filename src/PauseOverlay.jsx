@@ -4,19 +4,19 @@ function PauseOverlay({ onClose, onEndGame }) {
   return (
     <div style={overlayStyle}>
       <div style={contentStyle}>
-        <h2>Paus</h2>
+        <h2 style={gamePausedStyle}>Game paused</h2>
         <button style={buttonStyle} onClick={onClose}>
-          Fortsätt Spel
+          Continue
         </button>
         <button style={buttonStyle} onClick={onEndGame}>
-          Avbryt Spel
+          Cancel
         </button>
       </div>
     </div>
   );
 }
 
-// Stylinngen för hela overlayenn
+// Bakgrund och positionering för overlay
 const overlayStyle = {
   position: "fixed",
   top: "0",
@@ -31,7 +31,7 @@ const overlayStyle = {
   zIndex: "1000",
 };
 
-// stylinggen för innehållet i overlayen
+// Stil för innehåll i overlay
 const contentStyle = {
   backgroundColor: "#333",
   padding: "20px",
@@ -40,7 +40,16 @@ const contentStyle = {
   textAlign: "center",
 };
 
-// stylingen för knapparna i overlayen
+// Stil för "Game paused"-texten, med PixelFont och liknande styling
+const gamePausedStyle = {
+  fontFamily: "PixelFont, 'Courier New', sans-serif",  // Säkerställer att PixelFont används, annars fallback
+  textTransform: "uppercase",  // Liknande effekt som på titeln "Course Slayer"
+  color: "blue",  // Färg, kan justeras om du vill
+  fontSize: "100px",  // Storlek som på "Course Slayer"-titeln
+  marginBottom: "20px",  // Justering av mellanrum
+};
+
+// Stil för knappar
 const buttonStyle = {
   margin: "10px",
   padding: "10px 20px",

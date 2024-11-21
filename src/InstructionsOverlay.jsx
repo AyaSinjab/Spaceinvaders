@@ -1,81 +1,219 @@
-import React from "react";
+import React, { useState } from "react";
+import InstructionsOverlay from "./InstructionsOverlay"; // Kontrollera att detta är rätt path
+import { useNavigate } from "react-router-dom"; // Importera för navigation
 
-// Här kan man ändra innehållet på vad som ska vara med på overlayn
-function InstructionsOverlay({ onClose }) {
+// Define your component
+function StartScreen() {
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [showContent, setShowContent] = useState(true); // Ny state för att visa/dölja både text och startknapp
+  const navigate = useNavigate(); // Hook för att navigera
+
+  const handleStartGame = () => {
+    navigate("/game"); // Navigera till spelet
+  };
+
+  const handleInstructionsClick = () => {
+    setShowContent(false); // Dölj både text och startknapp när instruktionsknappen trycks
+    setShowInstructions(true);
+  };
+
+  const handleCloseInstructions = () => {
+    setShowContent(true); // Visa både text och startknapp igen när instruktionerna stängs
+    setShowInstructions(false);
+  };
+
   return (
-    <div style={overlayStyle}>
-      <div style={contentStyle}>
-        <style>
-          {`
-            @font-face {
-              font-family: 'PixelFont';
-              src: url('/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype'); // Viktig ändring här för korrekt sökväg
+    <div style={backgroundStyle}>
+      <style>
+        {`
+          @font-face {
+            font-family: 'PixelFont';
+            src: url('src/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype'); // Adjust the path according to your file location
+          }
+          /* Förhindra rullning på hela sidan */
+          html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;  /* Hindrar all scrollning */
+            height: 100%;  /* Se till att sidan täcker hela skärmen */
+          }
+
+          /* CSS för frågetecken-knappen */
+          .button-instructions {
+            align-items: center;
+            background-image: linear-gradient(135deg, #007bff 30%, #66b3ff);
+            border: 0;
+            border-radius: 50%;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            font-family: "Codec cold", sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+            height: 80px;
+            width: 80px;
+            justify-content: center;
+            letter-spacing: 0.4px;
+            line-height: 1;
+            padding: 0;
+            text-decoration: none;
+            text-transform: uppercase;
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            transition: all 200ms;
+            user-select: none;
+          }
+
+          .button-instructions:hover {
+            transform: scale(0.95);
+            opacity: 0.9;
+          }
+
+          .button-instructions:active {
+            outline: none;
+          }
+
+          /* CSS för startknapp */
+          .button-start {
+            padding: 1em 3em; 
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            outline: none;
+            color: rgb(255, 255, 255);
+            background-image: linear-gradient(135deg, #007bff 30%, #66b3ff);
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            transition: all 200ms ease;
+          }
+
+          .button-start:hover {
+            transform: scale(1.05); /* Slightly enlarge on hover */
+            opacity: 0.9;
+          }
+
+          .button-start:before {
+            content: "";
+            background: linear-gradient(
+              45deg,
+              #ff0000,
+              #ff7300,
+              #fffb00,
+              #48ff00,
+              #00ffd5,
+              #002bff,
+              #7a00ff,
+              #ff00c8,
+              #ff0000
+            );
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing-button-start 20s linear infinite;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+          }
+
+          @keyframes glowing-button-start {
+            0% {
+              background-position: 0 0;
             }
-          `}
-        </style>
-        <button style={closeButtonStyle} onClick={onClose}>
-          ✖
-        </button>
-        {/*Instruktionerna är tillfälliga men jag har stylat dem lite*/}
-        <h2 style={titleStyle}>Game Instructions</h2>
-        <div>
-          <div style={instStyle}>Shoot down as many books as fast as you can! </div>
-          <div style={instStyle}>To Shoot: Use the upper arrow ⬆️ or the spacebar   𓈙 </div>
-          <div style={instStyle}>To Move: Use the left and right arrows ⬅️➡️</div>
+            50% {
+              background-position: 400% 0;
+            }
+            100% {
+              background-position: 0 0;
+            }
+          }
+
+          .button-start:after {
+            z-index: -1;
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #007bff 30%, #66b3ff);
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+          }
+        `}
+      </style>
+
+      <button className="button-instructions" onClick={handleInstructionsClick}>
+        ?
+      </button>
+
+      {showInstructions && (
+        <InstructionsOverlay onClose={handleCloseInstructions} />
+      )}
+
+      {showContent && ( // Både text och startknapp visas endast om showContent är true
+        <div style={textContainerStyle}>
+          <h1 style={titleStyle}>Course Slayer</h1>
+          <h2 style={subtitleStyle}>stay sharp, slay smart</h2>
         </div>
-      </div>
+      )}
+
+      {showContent && ( // Startknappen visas endast om showContent är true
+        <button className="button-start" onClick={handleStartGame}>
+          START
+        </button>
+      )}
     </div>
   );
 }
 
-// Denna sköter stylingen för hela overlayn alltså hela denna sidan
-const overlayStyle = {
-  position: "fixed",
-  top: "0",
-  left: "0",
-  width: "100vw", //vw är egentligen bättre att använda en px, som mått
-  height: "100vh",
-  backgroundColor: "rgba(0, 0, 0, 0.9)", // Transparent svart bakgrund
+// Bakgrundsdesign
+const backgroundStyle = {
+  backgroundImage: `url(${"src/assets/startScreen.PNG"})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundAttachment: "fixed",  // Fixera bakgrunden
+  height: "100vh",  // Hela höjden på skärmen
+  width: "100vw",   // Hela bredden på skärmen
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "white",
-  zIndex: "1000", // Högre z-index för att säkerställa att overlayen syns över andra element
+  flexDirection: "column",
+  overflow: "hidden", // Förhindra scrollning på denna div också
+  position: "absolute", // Se till att den täcker hela skärmen
 };
 
-// Denna stylear instruktionstexten (alltihop just nu), dela in i fler div"ar för att desiggna bättre
-const contentStyle = {
-  padding: "20px",
+// Text-container
+const textContainerStyle = {
+  padding: "10px",
   borderRadius: "8px",
-  maxWidth: "700px",
   textAlign: "center",
-  color: "white", // Vit text för bättre kontrast
 };
 
-// Denna stylar stängningsknappend
-const closeButtonStyle = {
-  position: "absolute",
-  top: "20px",
-  right: "40px",
-  background: "transparent",
-  border: "none",
-  fontSize: "60px",
-  color: "#007bff",
-  cursor: "pointer",
-};
-
-// Inställningar för "Game instructions"
+// Titel-styling
 const titleStyle = {
+  color: "blue",
+  fontFamily: "PixelFont",
+  textTransform: "uppercase",
+  fontSize: "100px",
+  marginBottom: "-60px",
+};
+
+// Subtitle-styling
+const subtitleStyle = {
   color: "#E0218A",
-  fontFamily: "PixelFont", // Använder PixelFont
-  fontSize: "78px", // Sets the font size
+  fontFamily: "PixelFont",
+  fontSize: "50px",
 };
 
-// Inställningar för instruktionerna under game instructions
-const instStyle = {
-  color: "white",
-  fontFamily: "PixelFont", // Använder PixelFont
-  fontSize: "30px", // Sets the font size
-};
-
-export default InstructionsOverlay;
+export default StartScreen;
