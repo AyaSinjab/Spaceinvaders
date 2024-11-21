@@ -5,25 +5,24 @@ function InstructionsOverlay({ onClose }) {
   return (
     <div style={overlayStyle}>
       <div style={contentStyle}>
-      <style>
-        {`
-          @font-face {
-            font-family: 'PixelFont';
-            src: url('src/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype'); // Adjust the path according to your file location
-          }
-        `}
-      </style>
+        <style>
+          {`
+            @font-face {
+              font-family: 'PixelFont';
+              src: url('/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype'); // Viktig ändring här för korrekt sökväg
+            }
+          `}
+        </style>
         <button style={closeButtonStyle} onClick={onClose}>
           ✖
         </button>
         {/*Instruktionerna är tillfälliga men jag har stylat dem lite*/}
         <h2 style={titleStyle}>Game Instructions</h2>
-        <ul>
-          <li style={instStyle}>Shoot as many books as fast as you can </li>
-          <li style={instStyle}>To Shoot: Use the upper arrow ⬆️ or the spacebar   𓈙 </li>
-          <li style={instStyle}>To Move: Use the left and right arrows ⬅️➡️</li>
-          
-        </ul>
+        <div>
+          <div style={instStyle}>Shoot down as many books as fast as you can! </div>
+          <div style={instStyle}>To Shoot: Use the upper arrow ⬆️ or the spacebar   𓈙 </div>
+          <div style={instStyle}>To Move: Use the left and right arrows ⬅️➡️</div>
+        </div>
       </div>
     </div>
   );
@@ -36,7 +35,7 @@ const overlayStyle = {
   left: "0",
   width: "100vw", //vw är egentligen bättre att använda en px, som mått
   height: "100vh",
-  backgroundColor: "rgba(0, 0, 0, 0.93)", // Transparent svart bakgrund
+  backgroundColor: "rgba(0, 0, 0, 0.9)", // Transparent svart bakgrund
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -46,40 +45,37 @@ const overlayStyle = {
 
 // Denna stylear instruktionstexten (alltihop just nu), dela in i fler div"ar för att desiggna bättre
 const contentStyle = {
-  //backgroundColor: "rgba(0, 0, 0, 0.9)", // Mörk bakgrund för textområdet
   padding: "20px",
   borderRadius: "8px",
-  maxWidth: "600px",
+  maxWidth: "700px",
   textAlign: "center",
   color: "white", // Vit text för bättre kontrast
 };
 
-// Denna stylar stängningsknappen
+// Denna stylar stängningsknappend
 const closeButtonStyle = {
   position: "absolute",
-  top: "10px",
+  top: "20px",
   right: "40px",
   background: "transparent",
   border: "none",
   fontSize: "60px",
-  color: "red",
+  color: "#007bff",
   cursor: "pointer",
-  
-  
 };
-//Inställningar för "Game instructions"
+
+// Inställningar för "Game instructions"
 const titleStyle = {
   color: "#E0218A",
-  fontFamily: "PixelFont",
-  fontSize: "50px", // Sets the font size
-  
+  fontFamily: "PixelFont", // Använder PixelFont
+  fontSize: "78px", // Sets the font size
 };
-//Inställningar för instruktionerna under game instructions
+
+// Inställningar för instruktionerna under game instructions
 const instStyle = {
   color: "white",
-  fontFamily: "PixelFont",
+  fontFamily: "PixelFont", // Använder PixelFont
   fontSize: "30px", // Sets the font size
-  
 };
 
 export default InstructionsOverlay;
