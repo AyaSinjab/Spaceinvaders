@@ -60,8 +60,8 @@ function GameScreen() {
     const generateBooks = () => {
       let newBooks = [];
       const rows = 3; // Antal rader för böcker
-      const columns = 5; // Antal böcker per rad
-
+      const columns = 10; // Ökat antal böcker per rad (nu 10 istället för 5)
+  
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < columns; j++) {
           const randomImage = bookImages[Math.floor(Math.random() * bookImages.length)];
@@ -69,7 +69,7 @@ function GameScreen() {
             id: Math.random(), // Unikt ID för varje bok
             image: randomImage,
             position: {
-              x: (j * 20) + Math.random() * 10, // Slumpmässig horisontell position för varje bok
+              x: (j * 10) + Math.random() * 10, // Justerat för att skapa fler böcker per rad
               y: i * 20 + Math.random() * 5, // Vertikal position (skapar olika rader)
             },
           });
@@ -77,9 +77,9 @@ function GameScreen() {
       }
       setBookPositions(newBooks);
     };
-
+  
     generateBooks();
-  }, []);
+  }, []);  
 
   // Uppdatera skottets position
   useEffect(() => {
