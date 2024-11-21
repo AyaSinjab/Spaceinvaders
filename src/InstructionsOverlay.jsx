@@ -1,11 +1,18 @@
 import React from "react";
-import './styles/fonts.css'; // Importera fonten här
 
 // Här kan man ändra innehållet på vad som ska vara med på overlayn
 function InstructionsOverlay({ onClose }) {
   return (
     <div style={overlayStyle}>
       <div style={contentStyle}>
+        <style>
+          {`
+            @font-face {
+              font-family: 'PixelFont';
+              src: url('/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype'); // Viktig ändring här för korrekt sökväg
+            }
+          `}
+        </style>
         <button style={closeButtonStyle} onClick={onClose}>
           ✖
         </button>
@@ -45,7 +52,7 @@ const contentStyle = {
   color: "white", // Vit text för bättre kontrast
 };
 
-// Denna stylar stängningsknappen
+// Denna stylar stängningsknappend
 const closeButtonStyle = {
   position: "absolute",
   top: "20px",
