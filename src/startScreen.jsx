@@ -174,12 +174,14 @@ const backgroundStyle = {
   backgroundImage: `url(${"src/assets/startScreen.PNG"})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
+  backgroundAttachment: "fixed",
   height: "100vh",
   width: "100vw",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "column",
+  overflow: "hidden",
 };
 
 // Text-container
@@ -195,6 +197,7 @@ const titleStyle = {
   fontFamily: "PixelFont",
   textTransform: "uppercase",
   fontSize: "100px",
+  marginBottom: "-60px",
 };
 
 // Subtitle-styling
