@@ -34,8 +34,8 @@ function GameScreen() {
   const shootBullet = () => {
     if (bulletPosition === null) {
       // Skjut från mitten av spelarens bild
-      setBulletPosition(playerPosition + 2.5); // Justera så skottet skjuts från mitten
-      setBulletYPosition(-50); // Starta skottet under skärmen
+      setBulletPosition(playerPosition); // Justera så skottet skjuts från mitten
+      setBulletYPosition(10); // Skottet skjuts från spelarens höjd (justera detta för att matcha spelarens "mitt")
     }
   };
 
@@ -95,7 +95,7 @@ function GameScreen() {
           }
           return newY;
         });
-      }, 50); // Uppdatera position var 50 millisekund
+      }, 50); // Uppdatera var 50:e millisekund
       return () => clearInterval(bulletInterval);
     }
   }, [bulletPosition]);
@@ -225,27 +225,26 @@ const backgroundStyle = {
 const pauseButtonStyle = {
   position: "absolute",
   top: "30px",
-  right: "30px",
+  right: "40px",
   background: "transparent",
   border: "none",
-  fontSize: "50px",
-  cursor: "pointer",
   color: "white",
+  fontSize: "45px",
+  cursor: "pointer",
 };
 
 // Spelarens stil
 const playerStyle = {
   position: "absolute",
-  bottom: "10%", // Placerar spelaren nära botten
-  width: "500px", // Spelarens bredd
-  height: "300px", // Spelarens höjd
+  bottom: "10%",
+  width: "600px",
+  height: "400px",
 };
 
-// Böckernas stil
+// Bokstil
 const booksStyle = {
   position: "absolute",
-  width: "40px", // Bredden på varje bok
-  height: "60px", // Höjden på varje bok
+  width: "3%",
 };
 
 // Poängstil
@@ -254,6 +253,7 @@ const scoreStyle = {
   top: "10px",
   left: "10px",
   fontSize: "24px",
+  fontWeight: "bold",
 };
 
 export default GameScreen;
