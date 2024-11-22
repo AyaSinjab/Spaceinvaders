@@ -1,9 +1,6 @@
 // GameScreen.jsx
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // För navigation till EndScreenimport PauseOverlay from "./PauseOverlay"; // Importera overlay-komponenten
-import PauseOverlay from "./PauseOverlay"; // Importera overlay-komponenten
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import PauseOverlay from "./PauseOverlay";
 
 function GameScreen() {
@@ -129,20 +126,6 @@ function GameScreen() {
     navigate("/end"); // Navigerar till EndScreen
   };
 
-    // Prevent scrolling when the component mounts
-    useEffect(() => {
-      document.body.style.margin = "0"; // Remove default margin
-      document.body.style.padding = "0"; // Remove default padding
-      document.body.style.overflow = "hidden"; // Prevent scrolling
-      document.body.style.height = "100%"; // Ensure body takes full height
-      return () => {
-        document.body.style.overflow = "auto"; // Restore scrolling when unmounted
-      };
-    }, []);
-
-    navigate("/end"); // Navigera till EndScreen
-  };
-
   // Lyssna på tangenttryckningar för att flytta spelaren
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -175,6 +158,13 @@ function GameScreen() {
 
   return (
     <div style={backgroundStyle}>
+      <style>
+          {`@font-face {
+            font-family: 'PixelFont';
+            src: url('src/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype');
+            }
+          `}
+        </style>
 
       <button style={pauseButtonStyle} onClick={() => setIsPaused(true)}>
         ⏸
@@ -183,13 +173,9 @@ function GameScreen() {
         <PauseOverlay onClose={() => setIsPaused(false)} onEndGame={handleEndGame} />
       )}
       {/* Lägg till spelkomponenter och innehåll här */}
-      {/*Player element*/ }
-        <img
-        src={"src/assets/Spelare.png"} // Path to player image
-      
       {/* Player */}
       <img
-        src={"src/assets/player.png"}
+        src={"src/assets/Spelare.png"}
         alt="Player"
         style={{ ...playerStyle, left: `${playerPosition}%` }}
       />
@@ -232,19 +218,17 @@ function GameScreen() {
 // Bakgrundsstil
 const backgroundStyle = {
   backgroundImage: `url(${"src/assets/GameBakgrund.png"})`,
-  backgroundSize:"cover" ,
-  backgroundPosition: "center",
-  backgroundRepeat: "no-repeat", // Prevents the image from repeating
+  backgroundSize:"contain" ,
+  //backgroundPosition: "center",
   backgroundAttachment: "fixed", // Fixera bakgrunden så den inte rör sig
   height: "100vh",
   width: "100vw",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "#bfe9ff",
-  position:"relative",//allows aboslute positioning of child elements som t.ex player element
   color: "white",
-  position: "relative", // Gör att andra element kan placeras ovanpå bakgrunden
+  position:"relative",//allows aboslute positioning of child elements som t.ex player element
+  
 };
 
 // Pausknappens stil
@@ -262,8 +246,8 @@ const pauseButtonStyle = {
 // Spelarens stil
 const playerStyle = {
   position: "absolute",
-  bottom: "10%",
-  width: "600px",
+  bottom: "-28%",
+  width: "700px",
   height: "400px",
 };
 
@@ -276,10 +260,13 @@ const booksStyle = {
 // Poängstil
 const scoreStyle = {
   position: "absolute",
-  top: "10px",
-  left: "10px",
-  fontSize: "24px",
+  top: "20px",
+  left: "15px",
+  fontSize: "35px",
   fontWeight: "bold",
+  fontFamily: "PixelFont",
+  color:"white",
+  textShadow: "2px 3px 4px rgba(0, 0, 0, 0.9)"//horizontl shadow offset, vertical shadow offset, blur radius
 };
 
-export default GameScreen;
+export default GameScreen;   

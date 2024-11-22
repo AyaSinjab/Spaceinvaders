@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InstructionsOverlay from "./InstructionsOverlay"; // Kontrollera att detta är rätt path
+import InstructionsOverlay from "./TestInstructionsScreen.jsx"; // Kontrollera att detta är rätt path
 import { useNavigate } from "react-router-dom"; // Importera för navigation
 
 // Define your component
@@ -69,8 +69,8 @@ function StartScreen() {
 
           /* CSS för startknapp */
           .button-start {
-            padding: 1em 3em; 
-            font-size: 24px;
+            padding: 0.5em 2em; 
+            font-size: 35px;
             font-weight: bold;
             border: none;
             outline: none;
@@ -161,7 +161,7 @@ function StartScreen() {
       )}
 
       {showContent && ( // Startknappen visas endast om showContent är true
-        <button className="button-start" onClick={handleStartGame}>
+        <button style={{fontFamily:"PixelFont"}} className="button-start" onClick={handleStartGame}>
           START
         </button>
       )}
@@ -171,8 +171,8 @@ function StartScreen() {
 
 // Bakgrundsdesign
 const backgroundStyle = {
-  backgroundImage: `url(${"src/assets/startScreen.PNG"})`,
-  backgroundSize: "cover",
+  backgroundImage: `url(${"src/assets/StartBakgrund.png"})`,
+  backgroundSize: "contain",
   backgroundPosition: "center",
   backgroundAttachment: "fixed",
   height: "100vh",
