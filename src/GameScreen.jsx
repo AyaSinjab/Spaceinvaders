@@ -38,8 +38,8 @@ function GameScreen() {
   const shootBullet = () => {
     if (bulletPosition === null) {
       // Skjut från mitten av spelarens bild
-      setBulletPosition(playerPosition + 2.5); // Justera så skottet skjuts från mitten
-      setBulletYPosition(-50); // Starta skottet under skärmen
+      setBulletPosition(playerPosition); // Justera så skottet skjuts från mitten
+      setBulletYPosition(10); // Skottet skjuts från spelarens höjd (justera detta för att matcha spelarens "mitt")
     }
   };
 
@@ -64,8 +64,8 @@ function GameScreen() {
     const generateBooks = () => {
       let newBooks = [];
       const rows = 3; // Antal rader för böcker
-      const columns = 5; // Antal böcker per rad
-
+      const columns = 10; // Ökat antal böcker per rad (nu 10 istället för 5)
+  
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < columns; j++) {
           const randomImage = bookImages[Math.floor(Math.random() * bookImages.length)];
@@ -73,7 +73,7 @@ function GameScreen() {
             id: Math.random(), // Unikt ID för varje bok
             image: randomImage,
             position: {
-              x: (j * 20) + Math.random() * 10, // Slumpmässig horisontell position för varje bok
+              x: (j * 10) + Math.random() * 10, // Justerat för att skapa fler böcker per rad
               y: i * 20 + Math.random() * 5, // Vertikal position (skapar olika rader)
             },
           });
@@ -81,9 +81,9 @@ function GameScreen() {
       }
       setBookPositions(newBooks);
     };
-
+  
     generateBooks();
-  }, []);
+  }, []);  
 
   // Uppdatera skottets position
   useEffect(() => {
@@ -99,7 +99,7 @@ function GameScreen() {
           }
           return newY;
         });
-      }, 50); // Uppdatera position var 50 millisekund
+      }, 50); // Uppdatera var 50:e millisekund
       return () => clearInterval(bulletInterval);
     }
   }, [bulletPosition]);
@@ -251,27 +251,26 @@ const backgroundStyle = {
 const pauseButtonStyle = {
   position: "absolute",
   top: "30px",
-  right: "30px",
+  right: "40px",
   background: "transparent",
   border: "none",
-  fontSize: "50px",
-  cursor: "pointer",
   color: "white",
+  fontSize: "45px",
+  cursor: "pointer",
 };
 
 // Spelarens stil
 const playerStyle = {
   position: "absolute",
-  bottom: "10%", // Placerar spelaren nära botten
-  width: "500px", // Spelarens bredd
-  height: "300px", // Spelarens höjd
+  bottom: "10%",
+  width: "600px",
+  height: "400px",
 };
 
-// Böckernas stil
+// Bokstil
 const booksStyle = {
   position: "absolute",
-  width: "40px", // Bredden på varje bok
-  height: "60px", // Höjden på varje bok
+  width: "3%",
 };
 
 // Poängstil
@@ -280,6 +279,7 @@ const scoreStyle = {
   top: "10px",
   left: "10px",
   fontSize: "24px",
+  fontWeight: "bold",
 };
 
 export default GameScreen;
