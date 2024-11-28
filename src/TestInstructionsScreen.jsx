@@ -1,4 +1,6 @@
+
 import React from "react";
+
 
 // Här kan man ändra innehållet på vad som ska vara med på overlayn
 function InstructionsOverlay({ onClose }) {
@@ -11,9 +13,13 @@ function InstructionsOverlay({ onClose }) {
             font-family: 'PixelFont';
             src: url('src/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype'); // Adjust the path according to your file location
           }
+          .closeButton:hover {
+            transform: scale(1.05); /* Slightly enlarge on hover */
+            opacity: 0.9;
+          }
         `}
       </style>
-        <button style={closeButtonStyle} onClick={onClose}>
+        <button style={closeButtonStyle} className="closeButton" onClick={onClose}>
           ✖
         </button>
         {/*Instruktionerna är tillfälliga men jag har stylat dem lite*/}
@@ -62,9 +68,8 @@ const closeButtonStyle = {
   background: "transparent",
   border: "none",
   fontSize: "60px",
-  color: "red",
+  color: "#E0218A",
   cursor: "pointer",
-  
   
 };
 //Inställningar för "Game instructions"
