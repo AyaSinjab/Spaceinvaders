@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PauseOverlay from "./PauseOverlay";
+import shootSound from './assets/Gunsound.mp3'; 
+
 
 function GameScreen() {
   const [isPaused, setIsPaused] = useState(false);
@@ -9,7 +11,12 @@ function GameScreen() {
   const [bulletPosition, setBulletPosition] = useState(null); // Skottets horisontella position
   const [bulletYPosition, setBulletYPosition] = useState(-50); // Skottets vertikala position
   const [score, setScore] = useState(0); // Poäng
+  const [showEffect, setShowEffect] = useState(false);
+  const [effectPosition, setEffectPosition] = useState(null);//state for visual effect
+  const [scoreEffect, setScoreEffect] = useState(null); // Position av +1 /score effect
   const navigate = useNavigate();
+  
+
 
   // Lista med olika bokbilder
   const bookImages = [
@@ -32,9 +39,14 @@ function GameScreen() {
 
   // Hantera skottet när användaren trycker på mellanslag eller uppåtpil
   const shootBullet = () => {
+    //introducing the audio. To avoid overlapping if multiple shots are fired--> clone Audio each time
+    //
+    const gunSound=new Audio(shootSound);
+    gunSound.play();
     if (bulletPosition === null) {
       setBulletPosition(playerPosition); // Skjut från spelarens aktuella position
       setBulletYPosition(15); // Skottet börjar vid spelarens höjd
+      
     }
   };
 
@@ -58,7 +70,7 @@ function GameScreen() {
   useEffect(() => {
     const generateBooks = () => {
       let newBooks = [];
-      const rows = 3;
+      const rows = 2;
       const columns = 10;
 
       for (let i = 0; i < rows; i++) {
@@ -102,7 +114,7 @@ function GameScreen() {
   // Synkronisera skottets horisontella position med spelarens position
   useEffect(() => {
     if (bulletPosition !== null) {
-      setBulletPosition(playerPosition + 22);
+      setBulletPosition(playerPosition + 27);
     }
   }, [playerPosition, bulletPosition]);
 
@@ -112,7 +124,9 @@ function GameScreen() {
       const newBookPositions = bookPositions.filter((book) => {
         const hit = Math.abs(bulletPosition - book.position.x) < 5 && Math.abs(bulletYPosition - book.position.y) < 5;
         if (hit) {
+          bulletEffect(book.position.x, book.position.y);//triggar visuella effekter vid kollision
           setScore((prevScore) => prevScore + 1);
+          
         }
         return !hit;
       });
@@ -152,14 +166,78 @@ function GameScreen() {
     navigate("/end");
   };
 
+  {/*Triggar visuella effekter när skottet träffar en bok genom att ändra staten och sätta position*/}
+  const bulletEffect=(x,y)=>{
+    setEffectPosition({x,y});
+    setShowEffect(true);
+    setScoreEffect({ x, y });
+
+    setTimeout(()=>{
+      setShowEffect(false);
+      setScoreEffect(null);
+    }, 500);
+  };
+
   return (
     <div style={backgroundStyle}>
       <style>
         {`@font-face {
           font-family: 'PixelFont';
           src: url('src/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype');
-        }`}
+
+          @keyframes fadeUp {
+          from {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+        
+        }`
+        
+        }
       </style>
+
+
+      {/* Visual Effect  : Ni får gärna ändra och göra den finare!!!!!*/}
+      {showEffect && effectPosition && (
+        <div
+          style={{
+            position: "absolute",
+            top: `${effectPosition.y}%`,
+            left: `${effectPosition.x}%`,
+            width: "4px",
+            height: "10px",
+            borderRadius: "50%",
+            opacity:"70%",
+            backgroundColor: "yellow",
+            boxShadow: "0px 0px 10px 8px yellow",
+            animation: "fadeOut 0.08s",
+          }}
+        ></div>
+      )}
+      {/** +1 score effekten med egen fadeUp animation*/}
+      {scoreEffect && (
+        <div
+          style={{
+            position: "absolute",
+            top: `${scoreEffect.y}%`, 
+            left: `${scoreEffect.x}%`, 
+            fontSize: "30px",
+            color: "#E0218A",
+            fontWeight: "lighter",
+            fontFamily:"PixelFont",
+            animation: "fadeUp 0.5s", // Custom animation
+          }}
+        >
+          +1
+        </div>
+      )}
+
+
+      
 
       <button style={pauseButtonStyle} onClick={() => setIsPaused(true)}>⏸</button>
       {isPaused && (
@@ -189,9 +267,9 @@ function GameScreen() {
             position: "absolute",
             bottom: `${bulletYPosition}%`,
             left: `${bulletPosition}%`,
-            width: "5px",
-            height: "10px",
-            backgroundColor: "white",
+            width: "0.4vw",
+            height: "2vh",
+            backgroundColor: "yellow",
           }}
         />
       )}
@@ -226,9 +304,9 @@ const pauseButtonStyle = {
 
 const playerStyle = {
   position: "absolute",
-  bottom: "-28%",
-  width: "700px",
-  height: "400px",
+  bottom: "-35vh",
+  width: "60vw",
+  height: "75vh",
 };
 
 const booksStyle = {
@@ -238,13 +316,13 @@ const booksStyle = {
 
 const scoreStyle = {
   position: "absolute",
-  top: "20px",
-  left: "15px",
-  fontSize: "35px",
+  top: "5vh",
+  left: "20px",
+  fontSize: "45px",
   fontWeight: "bold",
   fontFamily: "PixelFont",
-  color: "white",
-  textShadow: "2px 3px 4px rgba(0, 0, 0, 0.9)",
+  color: "#E0218A",
+  textShadow: "2px 2px 10px rgba(255, 255, 255, 0.8)", // Glow effect around the text
 };
 
 export default GameScreen;
