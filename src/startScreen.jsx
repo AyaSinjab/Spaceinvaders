@@ -142,7 +142,7 @@ function StartScreen() {
             background: linear-gradient(135deg, #007bff 30%, #66b3ff);
             left: 0;
             top: 0;
-            border-radius: 10px;
+            border-radius: 10px; // Bra att den är px
           }
         `}
       </style>
@@ -178,7 +178,7 @@ function StartScreen() {
 // Bakgrundsdesign
 const backgroundStyle = {
   backgroundImage: `url(${"src/assets/StartBakgrund.png"})`,
-  backgroundSize: "contain",
+  backgroundSize: "cover",
   backgroundPosition: "center",
   backgroundAttachment: "fixed",
   height: "100vh",

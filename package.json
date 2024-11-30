@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "react-scripts start"
-
   },
   "dependencies": {
     "react": "^18.3.1",
