@@ -13,6 +13,10 @@ function GameScreen() {
   const [showEffect, setShowEffect] = useState(false);
   const [effectPosition, setEffectPosition] = useState(null); //state for visual effect
   const [scoreEffect, setScoreEffect] = useState(null); // Position av +1 /score effect
+  // Ny state-variabel för att spåra om böcker är initialiserade
+  const [bookPositionsInitialized, setBookPositionsInitialized] =
+    useState(false);
+
   const navigate = useNavigate();
 
   // Lista med olika bokbilder
@@ -62,6 +66,36 @@ function GameScreen() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (!bookPositionsInitialized) {
+      const generateBooks = () => {
+        let newBooks = [];
+        const rows = 2;
+        const columns = 10;
+
+        for (let i = 0; i < rows; i++) {
+          for (let j = 0; j < columns; j++) {
+            const randomImage =
+              bookImages[Math.floor(Math.random() * bookImages.length)];
+            newBooks.push({
+              id: Math.random(),
+              image: randomImage,
+              position: {
+                x: j * 10 + Math.random() * 10,
+                y: i * 20 + Math.random() * 5,
+              },
+            });
+          }
+        }
+        setBookPositions(newBooks);
+      };
+
+      generateBooks();
+      setBookPositionsInitialized(true);
+    }
+  }, []);
+
+  /* 
   // Skapa slumpmässiga böcker i flera rader
   useEffect(() => {
     const generateBooks = () => {
@@ -87,7 +121,7 @@ function GameScreen() {
     };
 
     generateBooks();
-  }, []);
+  }, []); */
 
   // Uppdatera skottets vertikala position
   useEffect(() => {
@@ -159,6 +193,14 @@ function GameScreen() {
       document.body.style.overflow = "auto";
     };
   }, []);
+
+  // Denna gör så att man kommer till Endscreen när alla böcker har blivit nedskjutna ****************
+  useEffect(() => {
+    if (bookPositions.length === 0 && bookPositionsInitialized) {
+      navigate("/end"); // Navigera till EndScreen
+    }
+  }, [bookPositions, bookPositionsInitialized]);
+  // ****************************************
 
   const handleEndGame = () => {
     navigate("/end");
