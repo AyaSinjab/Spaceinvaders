@@ -13,6 +13,9 @@ function GameScreen() {
   const [showEffect, setShowEffect] = useState(false);
   const [effectPosition, setEffectPosition] = useState(null); //state for visual effect
   const [scoreEffect, setScoreEffect] = useState(null); // Position av +1 /score effect
+  const [isFading, setIsFading] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0); // Håller reda på tiden i sekunder
+
   // Ny state-variabel för att spåra om böcker är initialiserade
   const [bookPositionsInitialized, setBookPositionsInitialized] =
     useState(false);
@@ -95,34 +98,6 @@ function GameScreen() {
     }
   }, []);
 
-  /* 
-  // Skapa slumpmässiga böcker i flera rader
-  useEffect(() => {
-    const generateBooks = () => {
-      let newBooks = [];
-      const rows = 2;
-      const columns = 10;
-
-      for (let i = 0; i < rows; i++) {
-        for (let j = 0; j < columns; j++) {
-          const randomImage =
-            bookImages[Math.floor(Math.random() * bookImages.length)];
-          newBooks.push({
-            id: Math.random(),
-            image: randomImage,
-            position: {
-              x: j * 10 + Math.random() * 10,
-              y: i * 20 + Math.random() * 5,
-            },
-          });
-        }
-      }
-      setBookPositions(newBooks);
-    };
-
-    generateBooks();
-  }, []); */
-
   // Uppdatera skottets vertikala position
   useEffect(() => {
     if (bulletPosition !== null) {
@@ -197,10 +172,22 @@ function GameScreen() {
   // Denna gör så att man kommer till Endscreen när alla böcker har blivit nedskjutna ****************
   useEffect(() => {
     if (bookPositions.length === 0 && bookPositionsInitialized) {
-      navigate("/end"); // Navigera till EndScreen
+      setIsFading(true); // Starta fade-animation
+      setTimeout(() => {
+        navigate("/end", { state: { elapsedTime, score } }); // Skicka både score och elapsedTime
+      }, 1000); // Matchar fade-animationens längd
     }
-  }, [bookPositions, bookPositionsInitialized]);
+  }, [bookPositions, bookPositionsInitialized, elapsedTime, score]);
+
   // ****************************************
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setElapsedTime((prevTime) => prevTime + 1);
+    }, 1000); // Uppdatera varje sekund
+
+    return () => clearInterval(timer); // Rensa timern när komponenten avmonteras
+  }, []);
 
   const handleEndGame = () => {
     navigate("/end");
@@ -221,7 +208,7 @@ function GameScreen() {
   };
 
   return (
-    <div style={backgroundStyle}>
+    <div style={backgroundStyle} className={isFading ? "fade-out" : ""}>
       <style>
         {`@font-face {
           font-family: 'PixelFont';
@@ -236,6 +223,19 @@ function GameScreen() {
             opacity: 0;
             transform: translateY(-20px);
           }
+            @keyframes fadeOut {
+          from {
+            opacity: 1;
+          }
+          to {
+          opacity: 0;
+           }
+          }
+
+.fade-out {
+  animation: fadeOut 1s forwards; /* 1s animation, forwards håller slutläget */
+}
+
         
         }`}
       </style>
@@ -314,7 +314,19 @@ function GameScreen() {
           }}
         />
       )}
-      <div style={scoreStyle}>Score: {score}</div>
+      <div
+        style={{
+          position: "absolute",
+          top: "5vh",
+          left: "20px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+      >
+        <div style={scoreStyle}>Score: {score}</div>
+        <div style={scoreStyle}>Tid: {elapsedTime}s</div>
+      </div>
     </div>
   );
 }
@@ -356,14 +368,15 @@ const booksStyle = {
 };
 
 const scoreStyle = {
-  position: "absolute",
+  /* position: "absolute",
   top: "5vh",
-  left: "20px",
+  left: "20px", */
   fontSize: "45px",
   fontWeight: "bold",
   fontFamily: "PixelFont",
   color: "#E0218A",
   textShadow: "2px 2px 10px rgba(255, 255, 255, 0.8)", // Glow effect around the text
+  marginBottom: "10px", // Lägg till lite mellanrum
 };
 
 export default GameScreen;
