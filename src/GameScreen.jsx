@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PauseOverlay from "./PauseOverlay";
-import shootSound from './assets/Gunsound.mp3'; 
-
+import shootSound from "./assets/Gunsound.mp3";
 
 function GameScreen() {
   const [isPaused, setIsPaused] = useState(false);
-  const [playerPosition, setPlayerPosition] = useState(50); // Spelarens position
+  const [playerPosition, setPlayerPosition] = useState(20); // Spelarens start position
   const [bookPositions, setBookPositions] = useState([]); // Böcker
   const [bulletPosition, setBulletPosition] = useState(null); // Skottets horisontella position
   const [bulletYPosition, setBulletYPosition] = useState(-50); // Skottets vertikala position
   const [score, setScore] = useState(0); // Poäng
   const [showEffect, setShowEffect] = useState(false);
-  const [effectPosition, setEffectPosition] = useState(null);//state for visual effect
+  const [effectPosition, setEffectPosition] = useState(null); //state for visual effect
   const [scoreEffect, setScoreEffect] = useState(null); // Position av +1 /score effect
   const navigate = useNavigate();
-  
-
 
   // Lista med olika bokbilder
   const bookImages = [
@@ -31,8 +28,8 @@ function GameScreen() {
   const movePlayer = (direction) => {
     setPlayerPosition((prev) => {
       let newPosition = prev + direction;
-      if (newPosition < 0) return 0; // Begränsa vänster rörelse
-      if (newPosition > 100) return 100; // Begränsa höger rörelse
+      if (newPosition < -30) return -30; // Begränsa vänster rörelse
+      if (newPosition > 70) return 70; // Begränsa höger rörelse
       return newPosition;
     });
   };
@@ -41,12 +38,11 @@ function GameScreen() {
   const shootBullet = () => {
     //introducing the audio. To avoid overlapping if multiple shots are fired--> clone Audio each time
     //
-    const gunSound=new Audio(shootSound);
+    const gunSound = new Audio(shootSound);
     gunSound.play();
     if (bulletPosition === null) {
       setBulletPosition(playerPosition); // Skjut från spelarens aktuella position
       setBulletYPosition(15); // Skottet börjar vid spelarens höjd
-      
     }
   };
 
@@ -75,12 +71,13 @@ function GameScreen() {
 
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < columns; j++) {
-          const randomImage = bookImages[Math.floor(Math.random() * bookImages.length)];
+          const randomImage =
+            bookImages[Math.floor(Math.random() * bookImages.length)];
           newBooks.push({
             id: Math.random(),
             image: randomImage,
             position: {
-              x: (j * 10) + Math.random() * 10,
+              x: j * 10 + Math.random() * 10,
               y: i * 20 + Math.random() * 5,
             },
           });
@@ -122,11 +119,12 @@ function GameScreen() {
   useEffect(() => {
     if (bulletPosition !== null) {
       const newBookPositions = bookPositions.filter((book) => {
-        const hit = Math.abs(bulletPosition - book.position.x) < 5 && Math.abs(bulletYPosition - book.position.y) < 5;
+        const hit =
+          Math.abs(bulletPosition - book.position.x) < 5 &&
+          Math.abs(bulletYPosition - book.position.y) < 5;
         if (hit) {
-          bulletEffect(book.position.x, book.position.y);//triggar visuella effekter vid kollision
+          bulletEffect(book.position.x, book.position.y); //triggar visuella effekter vid kollision
           setScore((prevScore) => prevScore + 1);
-          
         }
         return !hit;
       });
@@ -166,13 +164,15 @@ function GameScreen() {
     navigate("/end");
   };
 
-  {/*Triggar visuella effekter när skottet träffar en bok genom att ändra staten och sätta position*/}
-  const bulletEffect=(x,y)=>{
-    setEffectPosition({x,y});
+  {
+    /*Triggar visuella effekter när skottet träffar en bok genom att ändra staten och sätta position*/
+  }
+  const bulletEffect = (x, y) => {
+    setEffectPosition({ x, y });
     setShowEffect(true);
     setScoreEffect({ x, y });
 
-    setTimeout(()=>{
+    setTimeout(() => {
       setShowEffect(false);
       setScoreEffect(null);
     }, 500);
@@ -195,11 +195,8 @@ function GameScreen() {
             transform: translateY(-20px);
           }
         
-        }`
-        
-        }
+        }`}
       </style>
-
 
       {/* Visual Effect  : Ni får gärna ändra och göra den finare!!!!!*/}
       {showEffect && effectPosition && (
@@ -211,7 +208,7 @@ function GameScreen() {
             width: "4px",
             height: "10px",
             borderRadius: "50%",
-            opacity:"70%",
+            opacity: "70%",
             backgroundColor: "yellow",
             boxShadow: "0px 0px 10px 8px yellow",
             animation: "fadeOut 0.08s",
@@ -223,12 +220,12 @@ function GameScreen() {
         <div
           style={{
             position: "absolute",
-            top: `${scoreEffect.y}%`, 
-            left: `${scoreEffect.x}%`, 
+            top: `${scoreEffect.y}%`,
+            left: `${scoreEffect.x}%`,
             fontSize: "30px",
             color: "#E0218A",
             fontWeight: "lighter",
-            fontFamily:"PixelFont",
+            fontFamily: "PixelFont",
             animation: "fadeUp 0.5s", // Custom animation
           }}
         >
@@ -236,12 +233,14 @@ function GameScreen() {
         </div>
       )}
 
-
-      
-
-      <button style={pauseButtonStyle} onClick={() => setIsPaused(true)}>⏸</button>
+      <button style={pauseButtonStyle} onClick={() => setIsPaused(true)}>
+        ⏸
+      </button>
       {isPaused && (
-        <PauseOverlay onClose={() => setIsPaused(false)} onEndGame={handleEndGame} />
+        <PauseOverlay
+          onClose={() => setIsPaused(false)}
+          onEndGame={handleEndGame}
+        />
       )}
 
       <img
@@ -254,10 +253,10 @@ function GameScreen() {
           key={book.id}
           src={book.image}
           alt={`Books ${book.id}`}
-          style={{ 
-            ...booksStyle, 
-            top: `${book.position.y}%`, 
-            left: `${book.position.x}%` 
+          style={{
+            ...booksStyle,
+            top: `${book.position.y}%`,
+            left: `${book.position.x}%`,
           }}
         />
       ))}
