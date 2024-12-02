@@ -24,12 +24,12 @@ function InstructionsOverlay({ onClose }) {
         </button>
         {/*Instruktionerna är tillfälliga men jag har stylat dem lite*/}
         <h2 style={titleStyle}>Game Instructions</h2>
-        <ul>
-          <li style={instStyle}>Shoot as many books as fast as you can </li>
-          <li style={instStyle}>To Shoot: Use the upper arrow ⬆️ or the spacebar   𓈙 </li>
-          <li style={instStyle}>To Move: Use the left and right arrows ⬅️➡️</li>
+        <div>
+          <div style={instStyle}>Shoot as many books as fast as you can </div>
+          <div style={instStyle}>To Shoot: Use the upper arrow ⬆️ or the spacebar   𓈙 </div>
+          <div style={instStyle}>To Move: Use the left and right arrows ⬅️➡️</div>
           
-        </ul>
+        </div>
       </div>
     </div>
   );
