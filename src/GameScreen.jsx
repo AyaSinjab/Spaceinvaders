@@ -61,11 +61,11 @@ function GameScreen() {
           ...book,
           position: {
             x: book.position.x,
-            y: book.position.y + 1 > 100 ? 0 : book.position.y + 1,
+            y: book.position.y + 0.5 > 100 ? 0 : book.position.y + 0.5, // Detta beskriver hur stora steg böckerna tar när det falller
           },
         }))
       );
-    }, 100);
+    }, 100); //  (intervallet i millisekunder)
     return () => clearInterval(interval);
   }, []);
 
@@ -325,12 +325,13 @@ function GameScreen() {
         }}
       >
         <div style={scoreStyle}>Score: {score}</div>
-        <div style={scoreStyle}>Tid: {elapsedTime}s</div>
+        <div style={scoreStyle}>Time: {elapsedTime} s</div>
       </div>
     </div>
   );
 }
 
+// Bakgrunndsbild styling
 const backgroundStyle = {
   backgroundImage: `url(${"src/assets/GameBakgrund.png"})`,
   backgroundSize: "contain",
@@ -344,14 +345,16 @@ const backgroundStyle = {
   position: "relative",
 };
 
+// Designen av paus knappen
 const pauseButtonStyle = {
   position: "absolute",
-  top: "30px",
-  right: "40px",
+  top: "20px",
+  right: "30px",
   background: "transparent",
+  borderRadius: "30px",
   border: "none",
-  color: "white",
-  fontSize: "45px",
+  color: "#E0218A",
+  fontSize: "60px",
   cursor: "pointer",
 };
 
