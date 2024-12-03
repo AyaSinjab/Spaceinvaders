@@ -1,14 +1,15 @@
+// Detta är i den fil vi kodar den overlayn som förklarar
+// hur spelet fungerar och hur man spelar, därav namnet InstructionsOverlay
 
 import React from "react";
-
 
 // Här kan man ändra innehållet på vad som ska vara med på overlayn
 function InstructionsOverlay({ onClose }) {
   return (
     <div style={overlayStyle}>
       <div style={contentStyle}>
-      <style>
-        {`
+        <style>
+          {`
           @font-face {
             font-family: 'PixelFont';
             src: url('src/assets/pixeboy-font/Pixeboy-z8XGD.ttf') format('truetype'); // Adjust the path according to your file location
@@ -18,17 +19,24 @@ function InstructionsOverlay({ onClose }) {
             opacity: 0.9;
           }
         `}
-      </style>
-        <button style={closeButtonStyle} className="closeButton" onClick={onClose}>
+        </style>
+        <button
+          style={closeButtonStyle}
+          className="closeButton"
+          onClick={onClose}
+        >
           ✖
         </button>
         {/*Instruktionerna är tillfälliga men jag har stylat dem lite*/}
         <h2 style={titleStyle}>Game Instructions</h2>
         <div>
           <div style={instStyle}>Shoot as many books as fast as you can </div>
-          <div style={instStyle}>To Shoot: Use the upper arrow ⬆️ or the spacebar   𓈙 </div>
-          <div style={instStyle}>To Move: Use the left and right arrows ⬅️➡️</div>
-          
+          <div style={instStyle}>
+            To Shoot: Use the upper arrow ⬆️ or the spacebar 𓈙{" "}
+          </div>
+          <div style={instStyle}>
+            To Move: Use the left and right arrows ⬅️➡️
+          </div>
         </div>
       </div>
     </div>
@@ -70,21 +78,18 @@ const closeButtonStyle = {
   fontSize: "60px",
   color: "#E0218A",
   cursor: "pointer",
-  
 };
 //Inställningar för "Game instructions"
 const titleStyle = {
   color: "#E0218A",
   fontFamily: "PixelFont",
   fontSize: "50px", // Sets the font size
-  
 };
 //Inställningar för instruktionerna under game instructions
 const instStyle = {
   color: "white",
   fontFamily: "PixelFont",
   fontSize: "30px", // Sets the font size
-  
 };
 
 export default InstructionsOverlay;

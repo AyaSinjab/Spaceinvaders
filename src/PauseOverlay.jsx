@@ -1,3 +1,6 @@
+// Pause Overlay , går endast att komma till när man är i spelvyn och
+// vill pausa spelet för att tillexempel avsluta spelet.
+
 import React from "react";
 
 function PauseOverlay({ onClose, onEndGame }) {
@@ -49,18 +52,16 @@ const contentStyle = {
   borderRadius: "8px",
   maxWidth: "400px",
   textAlign: "center",
-  
-
 };
 
 // Stil för "Game paused"-texten, med PixelFont och liknande styling
 const gamePausedStyle = {
-  fontFamily: "PixelFont",  // Säkerställer att PixelFont används, annars fallback
-  textTransform: "uppercase",  // Liknande effekt som på titeln "Course Slayer"
-  color: "white",  // Färg, kan justeras om du vill
-  fontSize: "100px",  // Storlek som på "Course Slayer"-titeln
-  marginBottom: "50px",  // Justering av mellanrum
-  margin:"20px"
+  fontFamily: "PixelFont", // Säkerställer att PixelFont används, annars fallback
+  textTransform: "uppercase", // Liknande effekt som på titeln "Course Slayer"
+  color: "white", // Färg, kan justeras om du vill
+  fontSize: "100px", // Storlek som på "Course Slayer"-titeln
+  marginBottom: "50px", // Justering av mellanrum
+  margin: "20px",
 };
 
 // Stil för knappar
@@ -74,7 +75,6 @@ const buttonStyle = {
   color: "white",
   border: "none",
   borderRadius: "4px",
-  
 };
 
 export default PauseOverlay;

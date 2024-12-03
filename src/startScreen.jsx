@@ -1,9 +1,10 @@
+// Denna filen innehåller all kod som visas på förstasidan, där man kan välja att starta
+// spelet eller också komma till en overlay som förklarar spelet.
+
 import React, { useState } from "react";
-import InstructionsOverlay from "./TestInstructionsScreen.jsx"; // Kontrollera att detta är rätt path
+import InstructionsOverlay from "./InstructionsScreen.jsx"; // Kontrollera att detta är rätt path
 import { useNavigate } from "react-router-dom"; // Importera för navigation
 
-//haj haj, test komentar
-// Define your component
 function StartScreen() {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showContent, setShowContent] = useState(true); // Ny state för att visa/dölja både text och startknapp
