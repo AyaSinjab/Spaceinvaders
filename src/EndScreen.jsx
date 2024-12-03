@@ -7,8 +7,14 @@ import { useLocation } from "react-router-dom";
 function EndScreen() {
   const navigate = useNavigate();
 
+  // Denna hanterar när man trcker på knappen som ska ta en till startskärmen
   const handleBackToStart = () => {
     navigate("/"); // Navigerar tillbaka till startskärmen
+  };
+
+  // Denna hanterar så att man kan köra om spelet på direkten från denna skärmen
+  const handleRetryGame = () => {
+    navigate("/game"); // Navigerar direkt till spelet för att starta om
   };
 
   const location = useLocation();
@@ -42,10 +48,13 @@ function EndScreen() {
         `}
       </style>
       {/* Om vi vill ha någon mer text eller knapp på slutskärmen läggs detta till här */}
-      <p style={timestyle}>Din tid: {elapsedTime} s</p>
-      <p style={scorestyle}>Ditt score: {score}</p>
+      <p style={timestyle}>Time: {elapsedTime} s</p>
+      <p style={scorestyle}>Your score: {score}</p>
+      <button onClick={handleRetryGame} style={retryButtonStyle}>
+        Try again?
+      </button>
       <button onClick={handleBackToStart} style={buttonStyle}>
-        Tillbaka till Startskärmen
+        Back to Homescreen
       </button>
     </div>
   );
@@ -69,9 +78,24 @@ const scorestyle = {
   marginTop: "-40px",
 };
 
-// Styling för knappen "Tillbaka till startskärmen"
+// Styling för knappen "Try again"
+const retryButtonStyle = {
+  marginTop: "1px",
+  fontFamily: "PixelFont", // Samma font som Course Slayer
+  padding: "10px 20px",
+  fontSize: "50px",
+  cursor: "pointer",
+  backgroundColor: "#FF4500", // Orange färg för "Försök igen"-knappen
+  color: "white",
+  border: "none",
+  borderRadius: "10px",
+  transition: "background-color 0.3s",
+};
+
+// Styling för knappen "Back to Homescreen"
 const buttonStyle = {
-  marginTop: "5px", // Avståndet från knappen "Tillbaka till startskärmmen" upp till texten "ditt score"
+  fontFamily: "PixelFont", // Samma font som Course Slayer
+  marginTop: "20px", // Avståndet mellan knapparna
   padding: "10px 20px",
   fontSize: "20px",
   cursor: "pointer",
@@ -80,6 +104,11 @@ const buttonStyle = {
   border: "none",
   borderRadius: "4px",
   transition: "background-color 0.3s",
+};
+
+// Hover-effekter
+retryButtonStyle[":hover"] = {
+  backgroundColor: "#FF6347", // Ljusare orange
 };
 
 // Hover-styling (om du vill lägga till extra styling för hovereffekten på knappen)
