@@ -12,12 +12,13 @@ function EndScreen() {
   };
 
   const location = useLocation();
-  const elapsedTime = location.state?.elapsedTime || 0; // Tid från spelet
-  const score = location.state?.score || 0; // Poäng från spelet
+  const elapsedTime = location.state?.elapsedTime || 0; //  Hämtar tid från spelet
+  const score = location.state?.score || 0; // Hämtar poäng insamlat från spelet
 
   return (
     <div
       style={{
+        // All styling för bakgrundsbild hamnade här
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -30,9 +31,8 @@ function EndScreen() {
         /* color: "white", */
       }}
     >
-      {/* <h1>Spelet är avslutat</h1> */}
+      {/* Om vi vill ha någon mer text eller knapp på slutskärmen läggs detta till här */}
       <p style={timestyle}>Din tid: {elapsedTime}s</p>
-      {/* <p>Tack för att du spelade!</p> */}
       <p style={scorestyle}>Ditt score: {score}</p>
       <button onClick={handleBackToStart} style={buttonStyle}>
         Tillbaka till Startskärmen
@@ -41,16 +41,16 @@ function EndScreen() {
   );
 }
 
-// Stylar texten "Ditt score"
-const scorestyle = {
-  color: "black",
-  marginTop: "1px",
-};
-
 // Stylar texten "Din tid: .. s"
 const timestyle = {
   color: "black",
   marginTop: "200px",
+};
+
+// Stylar texten "Ditt score"
+const scorestyle = {
+  color: "black",
+  marginTop: "1px",
 };
 
 // Styling för knappen "Tillbaka till startskärmen"
@@ -66,7 +66,7 @@ const buttonStyle = {
   transition: "background-color 0.3s",
 };
 
-// Hover-styling (om du vill lägga till extra styling för hovereffekten)
+// Hover-styling (om du vill lägga till extra styling för hovereffekten på knappen)
 buttonStyle[":hover"] = {
   backgroundColor: "#45a049",
 };
