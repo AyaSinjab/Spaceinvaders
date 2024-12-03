@@ -24,14 +24,16 @@ function EndScreen() {
         padding: "20px",
         height: "100vh",
         justifyContent: "center",
-        backgroundColor: "#222",
-        color: "white",
+        backgroundImage: "url('src/assets/tillfalliggameoverbakgrund.PNG')", //tillfällig bakgrundsbild tills jag fått bättre av Aya :)
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        /* color: "white", */
       }}
     >
-      <h1>Spelet är avslutat</h1>
-      <p>Din tid: {elapsedTime}s</p>
-      <p>Tack för att du spelade!</p>
-      <p>Ditt score: {score}</p>
+      {/* <h1>Spelet är avslutat</h1> */}
+      <p style={timestyle}>Din tid: {elapsedTime}s</p>
+      {/* <p>Tack för att du spelade!</p> */}
+      <p style={scorestyle}>Ditt score: {score}</p>
       <button onClick={handleBackToStart} style={buttonStyle}>
         Tillbaka till Startskärmen
       </button>
@@ -39,9 +41,21 @@ function EndScreen() {
   );
 }
 
-// Styling för knappen
+// Stylar texten "Ditt score"
+const scorestyle = {
+  color: "black",
+  marginTop: "1px",
+};
+
+// Stylar texten "Din tid: .. s"
+const timestyle = {
+  color: "black",
+  marginTop: "200px",
+};
+
+// Styling för knappen "Tillbaka till startskärmen"
 const buttonStyle = {
-  marginTop: "20px",
+  marginTop: "5px", // Avståndet från knappen "Tillbaka till startskärmmen" upp till texten "ditt score"
   padding: "10px 20px",
   fontSize: "16px",
   cursor: "pointer",
