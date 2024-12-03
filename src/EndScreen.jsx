@@ -31,7 +31,7 @@ function EndScreen() {
         //padding: "20px",
         height: "100vh",
         justifyContent: "center",
-        backgroundImage: "url('src/assets/tillfalliggameoverbakgrund.PNG')", //tillfällig bakgrundsbild tills jag fått bättre av Aya :)
+        backgroundImage: "url('src/assets/tillfallligggameover2.PNG')", //tillfällig bakgrundsbild tills jag fått bättre av Aya :)
         backgroundSize: "cover",
         backgroundPosition: "center",
         /* color: "white", */
@@ -66,7 +66,7 @@ const timestyle = {
   //textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)",
   fontSize: "50px",
   color: "black",
-  marginTop: "300px",
+  marginTop: "350px",
 };
 
 // Stylar texten "Ditt score"
