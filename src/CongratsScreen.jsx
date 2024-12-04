@@ -1,4 +1,4 @@
-// EndScreen.jsx
+// CongratsScreen.jsx
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +32,7 @@ function EndScreen() {
         height: "100vh",
         overflow:"hidden",// så att man inte kan scrolla 
         justifyContent: "center",
-        backgroundImage: "url('src/assets/Gameover.png')", //Vad tycks om denna bakgrund???
+        backgroundImage: "url('src/assets/congratsScreen.png')", //Vad tycks om denna bakgrund???
         backgroundSize: "cover",
         backgroundPosition: "center",
         /* color: "white", */
@@ -66,11 +66,12 @@ function EndScreen() {
         `}
       </style>
       {/* Om vi vill ha någon mer text eller knapp på slutskärmen läggs detta till här */}
-      <p style={gameoverstyle}>GAME OVER</p>
+     
+      <p style={Congratsstyle}>Congratulations</p>
       <p style={timestyle}>Time: {elapsedTime} s</p>
       <p style={scorestyle}>Your score: {score}</p>
       <button onClick={handleRetryGame} style={retryButtonStyle} className="hoverButton">
-        Try again?
+        Play again?
       </button>
       <button onClick={handleBackToStart} style={buttonStyle} className="hoverButton">
         Back to Homescreen
@@ -79,12 +80,15 @@ function EndScreen() {
   );
 }
 
+
 //Stylar texten "Game over"
-const gameoverstyle={
+const Congratsstyle={
   fontFamily: "PixelFont",
-  fontSize:"120px",
-  marginTop:"50px",
+  fontSize:"100px",
+  marginTop:"20px",
   marginBottom:"70px",
+  textShadow: "2px 2px 2px rgba(255, 255, 255, 0.5)" 
+  
 }
 
 // Stylar texten "Din tid: .. s"
@@ -105,14 +109,14 @@ const scorestyle = {
   marginTop: "-55px",
 };
 
-// Styling för knappen "Try again"
+// Styling för knappen "Play again"
 const retryButtonStyle = {
   marginTop: "-10px",
   fontFamily: "PixelFont", // Samma font som Course Slayer
   padding: "10px 20px",
   fontSize: "50px",
   cursor: "pointer",
-  backgroundColor: "#FF4500", // Orange färg för "Försök igen"-knappen
+  backgroundColor: "#FFD700", // Orange färg för "Försök igen"-knappen
   color: "white",
   border: "none",
   borderRadius: "10px",

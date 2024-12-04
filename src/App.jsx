@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StartScreen from "./startScreen";
 import GameScreen from "./GameScreen";
 import EndScreen from "./EndScreen"; // Importera EndScreen
+import CongratsScreen from "./CongratsScreen";//importera congratsscreen
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<StartScreen />} />
         <Route path="/game" element={<GameScreen />} />
+        <Route path="/congrats" element={<CongratsScreen />} />
         <Route path="/end" element={<EndScreen />} />{" "}
         {/* Ny väg för EndScreen */}
       </Routes>

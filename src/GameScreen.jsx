@@ -15,6 +15,7 @@ function GameScreen() {
   const [scoreEffect, setScoreEffect] = useState(null); // Position av +1 /score effect
   const [isFading, setIsFading] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0); // Håller reda på tiden i sekunder
+  const [isAlertActive, setIsAlertActive] = useState(false); // State for alert effect
 
   // Ny state-variabel för att spåra om böcker är initialiserade
   const [bookPositionsInitialized, setBookPositionsInitialized] =
@@ -169,12 +170,12 @@ function GameScreen() {
     };
   }, []);
 
-  // Denna gör så att man kommer till Endscreen när alla böcker har blivit nedskjutna ****************
+  // Denna gör så att man kommer till Congratsscreen när alla böcker har blivit nedskjutna ( Då har man vunnit) ****************
   useEffect(() => {
     if (bookPositions.length === 0 && bookPositionsInitialized) {
       setIsFading(true); // Starta fade-animation
       setTimeout(() => {
-        navigate("/end", { state: { elapsedTime, score } }); // Skicka både score och elapsedTime
+        navigate("/congrats", { state: { elapsedTime, score } }); // Skicka både score och elapsedTime
       }, 1000); // Matchar fade-animationens längd
     }
   }, [bookPositions, bookPositionsInitialized, elapsedTime, score]);
@@ -189,8 +190,38 @@ function GameScreen() {
     return () => clearInterval(timer); // Rensa timern när komponenten avmonteras
   }, []);
 
+
+  // denna gör att bakgrunden lyser rött när tiden närmar sig 2 minuter ************
+  useEffect(() => {
+    if (elapsedTime >= 110 && elapsedTime < 120) { // Trigger alert when 110-120 seconds have passed
+      const interval = setInterval(() => {
+        setIsAlertActive((prev) => !prev); // Toggle the alert effect
+      }, 500); // Toggle every 500ms for a flashing effect
+  
+      // Clear the interval once time goes past 120 seconds or when the game ends
+      return () => clearInterval(interval);
+    }
+  }, [elapsedTime]);
+
+  //********************************************************** */
+
+  //Denna gör så att man kommer till endscreen när tiden överstiger 2 min. (Då har man förlorat)*************
+  useEffect(() => {
+    if (elapsedTime >= 120) {
+      handleEndGame(); // Call the function that navigates to the end screen
+    }
+  }, [elapsedTime]);
+
+//   ***************************************************
+
+  //state säger till att score och time uppdateras i endscreenen
   const handleEndGame = () => {
-    navigate("/end");
+    navigate("/end",{
+      state:{
+        elapsedTime:elapsedTime,
+        score:score,
+      },
+    });
   };
 
   {
@@ -205,6 +236,22 @@ function GameScreen() {
       setShowEffect(false);
       setScoreEffect(null);
     }, 500);
+  };
+  
+
+  const backgroundStyle = {
+    backgroundImage: `url(${"src/assets/GameBakgrund.png"})`,
+    backgroundSize: "contain",
+    backgroundAttachment: "fixed",
+    height: "100vh",
+    width: "100vw",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+    position: "relative",
+    filter: isAlertActive ? "hue-rotate(35deg)  saturate(0.8) " : "none",// ni kan justera färgen på bakgrunden när den börjar lysa
+    transition: "filter 0.5s ease-in-out", // fixar en smidig visuell effekt när bakgrunden lyser
   };
 
   return (
@@ -329,24 +376,13 @@ function GameScreen() {
         }}
       >
         <div style={scoreStyle}>Score: {score}</div>
-        <div style={scoreStyle}>Tid: {elapsedTime}s</div>
+        <div style={scoreStyle}>Time: {elapsedTime}s</div>
       </div>
     </div>
   );
 }
 
-const backgroundStyle = {
-  backgroundImage: `url(${"src/assets/GameBakgrund.png"})`,
-  backgroundSize: "contain",
-  backgroundAttachment: "fixed",
-  height: "100vh",
-  width: "100vw",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "white",
-  position: "relative",
-};
+
 
 const pauseButtonStyle = {
   position: "absolute",
@@ -357,6 +393,7 @@ const pauseButtonStyle = {
   color: "white",
   fontSize: "45px",
   cursor: "pointer",
+  zIndex:10,// gör att böckerna genereras bakom paus knappen och inte täcker den.
 };
 
 const playerStyle = {
@@ -372,14 +409,11 @@ const booksStyle = {
 };
 
 const scoreStyle = {
-  /* position: "absolute",
-  top: "5vh",
-  left: "20px", */
   fontSize: "45px",
   fontWeight: "bold",
   fontFamily: "PixelFont",
-  color: "#E0218A",
-  textShadow: "2px 2px 10px rgba(255, 255, 255, 0.8)", // Glow effect around the text
+  color: "white",
+  textShadow: "2px 2px 0px rgba(0, 0, 0, 0.7), -2px -2px 0px rgba(0, 0, 0, 0.7), 2px -2px 0px rgba(0, 0, 0, 0.7), -2px 2px 0px rgba(0, 0, 0, 0.7)",// shadow och outline för score och time
   marginBottom: "10px", // Lägg till lite mellanrum
 };
 
