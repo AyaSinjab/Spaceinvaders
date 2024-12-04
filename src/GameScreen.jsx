@@ -253,7 +253,7 @@ function GameScreen() {
             opacity: "70%",
             backgroundColor: "yellow",
             boxShadow: "0px 0px 10px 8px yellow",
-            animation: "fadeOut 0.08s",
+            animation: "fadeOut 0.05s",
           }}
         ></div>
       )}
@@ -267,11 +267,15 @@ function GameScreen() {
             fontSize: "30px",
             color: "#E0218A",
             fontWeight: "lighter",
+            
             fontFamily: "PixelFont",
             animation: "fadeUp 0.5s", // Custom animation
+
+            
+
           }}
         >
-          +1
+          Boom
         </div>
       )}
 
