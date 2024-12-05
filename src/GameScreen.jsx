@@ -15,7 +15,9 @@ function GameScreen() {
   const [scoreEffect, setScoreEffect] = useState(null); // Position av +1 /score effect
   const [isFading, setIsFading] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0); // Håller reda på tiden i sekunder
-  const [isAlertActive, setIsAlertActive] = useState(false); // State for alert effect
+  const [isAlertActive, setIsAlertActive] = useState(false); // State för alert effect
+  const [missedBooks, setMissedBooks] = useState(0);// state för missade böcker
+
 
   // Ny state-variabel för att spåra om böcker är initialiserade
   const [bookPositionsInitialized, setBookPositionsInitialized] =
@@ -54,21 +56,42 @@ function GameScreen() {
     }
   };
 
-  // Uppdatera böckernas rörelse (fallande)
+  // Uppdatera böckernas rörelse (fallande)+ kontrollera hur många böcker som ej blir nedskjutna. 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setBookPositions((prevBooks) =>
-        prevBooks.map((book) => ({
-          ...book,
-          position: {
-            x: book.position.x,
-            y: book.position.y + 1 > 100 ? 0 : book.position.y + 1,
-          },
-        }))
-      );
-    }, 100);
-    return () => clearInterval(interval);
-  }, []);
+    if (!isPaused){//uppdatera böckernas rörelse endast om spelet inte är paused!!
+      const interval = setInterval(() => {
+        setBookPositions((prevBooks) =>
+          prevBooks.map((book) => {
+            if (book.position.y + 1 > 100) {// om bokens y position > 100 --> den når botten av skärmen--> boken är missad. 
+              setMissedBooks((prevMissed) => prevMissed + 1); // uppdatera antalet missade böcker (incrementar om en boks y pos. är >100)
+              return {
+                ...book,
+                position: {
+                  x: Math.random() * 90, // Den resettar den missade bokens x position till random och y position till toppen (0)
+                  y: 0, 
+                },
+              };
+            }
+            return {
+              ...book,
+              position: {
+                x: book.position.x,
+                y: book.position.y + 1,
+              },
+            };
+          })
+        );
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [isPaused]);
+
+  //Navigera till endscreen om spelaren missar mer än 50 böcker( Det är många böcker man missar men vi kan minska antalet liteee om ni vill)
+  useEffect(() => {
+    if (missedBooks > 50) {
+      handleEndGame(); // Navigate to the end screen
+    }
+  }, [missedBooks]);
 
   useEffect(() => {
     if (!bookPositionsInitialized) {
@@ -99,9 +122,9 @@ function GameScreen() {
     }
   }, []);
 
-  // Uppdatera skottets vertikala position
+  // Uppdatera skottets vertikala position endast när spelet inte är paused
   useEffect(() => {
-    if (bulletPosition !== null) {
+    if (bulletPosition !== null && !isPaused) {//spelet måste vara igång (inte paused)
       const bulletInterval = setInterval(() => {
         setBulletYPosition((prevY) => {
           const newY = prevY + 5; // Skottet rör sig uppåt
@@ -116,7 +139,7 @@ function GameScreen() {
       }, 50);
       return () => clearInterval(bulletInterval);
     }
-  }, [bulletPosition]);
+  }, [bulletPosition, isPaused]);
 
   // Synkronisera skottets horisontella position med spelarens position
   useEffect(() => {
@@ -127,7 +150,7 @@ function GameScreen() {
 
   // Kontrollera om ett skott träffar en bok
   useEffect(() => {
-    if (bulletPosition !== null) {
+    if (bulletPosition !== null ) {
       const newBookPositions = bookPositions.filter((book) => {
         const hit =
           Math.abs(bulletPosition - book.position.x) < 5 &&
@@ -150,6 +173,7 @@ function GameScreen() {
   // Hantera tangenttryckningar
   useEffect(() => {
     const handleKeyDown = (event) => {
+      if (isPaused) return;//Så att alla tangetnttryckningar ignoreras då spelet är paused ( man kan inte skjuta osv.)
       if (event.key === "ArrowLeft") {
         movePlayer(-5);
       } else if (event.key === "ArrowRight") {
@@ -161,7 +185,7 @@ function GameScreen() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isPaused]);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -183,12 +207,14 @@ function GameScreen() {
   // ****************************************
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    if (!isPaused){//pausa timern om spelet är paused. 
+      const timer = setInterval(() => {
       setElapsedTime((prevTime) => prevTime + 1);
-    }, 1000); // Uppdatera varje sekund
+     }, 1000); // Uppdatera varje sekund
 
-    return () => clearInterval(timer); // Rensa timern när komponenten avmonteras
-  }, []);
+     return () => clearInterval(timer); // Rensa timern när komponenten avmonteras
+    }
+  }, [isPaused]);
 
 
   // denna gör att bakgrunden lyser rött när tiden närmar sig 2 minuter ************
@@ -220,6 +246,7 @@ function GameScreen() {
       state:{
         elapsedTime:elapsedTime,
         score:score,
+        missedBooks,
       },
     });
   };
@@ -377,6 +404,7 @@ function GameScreen() {
       >
         <div style={scoreStyle}>Score: {score}</div>
         <div style={scoreStyle}>Time: {elapsedTime}s</div>
+        <div style={scoreStyle}>Missed: {missedBooks}</div>
       </div>
     </div>
   );
