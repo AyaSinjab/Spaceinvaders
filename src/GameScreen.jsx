@@ -16,8 +16,7 @@ function GameScreen() {
   const [isFading, setIsFading] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0); // Håller reda på tiden i sekunder
   const [isAlertActive, setIsAlertActive] = useState(false); // State för alert effect
-  const [missedBooks, setMissedBooks] = useState(0);// state för missade böcker
-
+  const [missedBooks, setMissedBooks] = useState(0); // state för missade böcker
 
   // Ny state-variabel för att spåra om böcker är initialiserade
   const [bookPositionsInitialized, setBookPositionsInitialized] =
@@ -56,19 +55,21 @@ function GameScreen() {
     }
   };
 
-  // Uppdatera böckernas rörelse (fallande)+ kontrollera hur många böcker som ej blir nedskjutna. 
+  // Uppdatera böckernas rörelse (fallande)+ kontrollera hur många böcker som ej blir nedskjutna.
   useEffect(() => {
-    if (!isPaused){//uppdatera böckernas rörelse endast om spelet inte är paused!!
+    if (!isPaused) {
+      //uppdatera böckernas rörelse endast om spelet inte är paused!!
       const interval = setInterval(() => {
         setBookPositions((prevBooks) =>
           prevBooks.map((book) => {
-            if (book.position.y + 1 > 100) {// om bokens y position > 100 --> den når botten av skärmen--> boken är missad. 
+            if (book.position.y + 1 > 100) {
+              // om bokens y position > 100 --> den når botten av skärmen--> boken är missad.
               setMissedBooks((prevMissed) => prevMissed + 1); // uppdatera antalet missade böcker (incrementar om en boks y pos. är >100)
               return {
                 ...book,
                 position: {
                   x: Math.random() * 90, // Den resettar den missade bokens x position till random och y position till toppen (0)
-                  y: 0, 
+                  y: 0,
                 },
               };
             }
@@ -124,7 +125,8 @@ function GameScreen() {
 
   // Uppdatera skottets vertikala position endast när spelet inte är paused
   useEffect(() => {
-    if (bulletPosition !== null && !isPaused) {//spelet måste vara igång (inte paused)
+    if (bulletPosition !== null && !isPaused) {
+      //spelet måste vara igång (inte paused)
       const bulletInterval = setInterval(() => {
         setBulletYPosition((prevY) => {
           const newY = prevY + 5; // Skottet rör sig uppåt
@@ -150,7 +152,7 @@ function GameScreen() {
 
   // Kontrollera om ett skott träffar en bok
   useEffect(() => {
-    if (bulletPosition !== null ) {
+    if (bulletPosition !== null) {
       const newBookPositions = bookPositions.filter((book) => {
         const hit =
           Math.abs(bulletPosition - book.position.x) < 5 &&
@@ -173,7 +175,7 @@ function GameScreen() {
   // Hantera tangenttryckningar
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (isPaused) return;//Så att alla tangetnttryckningar ignoreras då spelet är paused ( man kan inte skjuta osv.)
+      if (isPaused) return; //Så att alla tangetnttryckningar ignoreras då spelet är paused ( man kan inte skjuta osv.)
       if (event.key === "ArrowLeft") {
         movePlayer(-5);
       } else if (event.key === "ArrowRight") {
@@ -207,23 +209,24 @@ function GameScreen() {
   // ****************************************
 
   useEffect(() => {
-    if (!isPaused){//pausa timern om spelet är paused. 
+    if (!isPaused) {
+      //pausa timern om spelet är paused.
       const timer = setInterval(() => {
-      setElapsedTime((prevTime) => prevTime + 1);
-     }, 1000); // Uppdatera varje sekund
+        setElapsedTime((prevTime) => prevTime + 1);
+      }, 1000); // Uppdatera varje sekund
 
-     return () => clearInterval(timer); // Rensa timern när komponenten avmonteras
+      return () => clearInterval(timer); // Rensa timern när komponenten avmonteras
     }
   }, [isPaused]);
 
-
   // denna gör att bakgrunden lyser rött när tiden närmar sig 2 minuter ************
   useEffect(() => {
-    if (elapsedTime >= 110 && elapsedTime < 120) { // Trigger alert when 110-120 seconds have passed
+    if (elapsedTime >= 110 && elapsedTime < 120) {
+      // Trigger alert when 110-120 seconds have passed
       const interval = setInterval(() => {
         setIsAlertActive((prev) => !prev); // Toggle the alert effect
       }, 500); // Toggle every 500ms for a flashing effect
-  
+
       // Clear the interval once time goes past 120 seconds or when the game ends
       return () => clearInterval(interval);
     }
@@ -238,14 +241,14 @@ function GameScreen() {
     }
   }, [elapsedTime]);
 
-//   ***************************************************
+  //   ***************************************************
 
   //state säger till att score och time uppdateras i endscreenen
   const handleEndGame = () => {
-    navigate("/end",{
-      state:{
-        elapsedTime:elapsedTime,
-        score:score,
+    navigate("/end", {
+      state: {
+        elapsedTime: elapsedTime,
+        score: score,
         missedBooks,
       },
     });
@@ -264,7 +267,6 @@ function GameScreen() {
       setScoreEffect(null);
     }, 500);
   };
-  
 
   const backgroundStyle = {
     backgroundImage: `url(${"src/assets/GameBakgrund.png"})`,
@@ -277,7 +279,7 @@ function GameScreen() {
     justifyContent: "center",
     color: "white",
     position: "relative",
-    filter: isAlertActive ? "hue-rotate(35deg)  saturate(0.8) " : "none",// ni kan justera färgen på bakgrunden när den börjar lysa
+    filter: isAlertActive ? "hue-rotate(35deg)  saturate(0.8) " : "none", // ni kan justera färgen på bakgrunden när den börjar lysa
     transition: "filter 0.5s ease-in-out", // fixar en smidig visuell effekt när bakgrunden lyser
   };
 
@@ -341,12 +343,9 @@ function GameScreen() {
             fontSize: "30px",
             color: "#E0218A",
             fontWeight: "lighter",
-            
+
             fontFamily: "PixelFont",
             animation: "fadeUp 0.5s", // Custom animation
-
-            
-
           }}
         >
           Boom
@@ -354,7 +353,7 @@ function GameScreen() {
       )}
 
       <button style={pauseButtonStyle} onClick={() => setIsPaused(true)}>
-        ⏸
+        <span style={pauseIconStyle}>⏸</span>
       </button>
       {isPaused && (
         <PauseOverlay
@@ -410,18 +409,32 @@ function GameScreen() {
   );
 }
 
-
-
+// Stylingen på paus knappen
 const pauseButtonStyle = {
   position: "absolute",
   top: "30px",
   right: "40px",
-  background: "transparent",
+  background: "transparent", // Ingen bakgrund
+  fontSize: "50px",
   border: "none",
-  color: "white",
-  fontSize: "45px",
   cursor: "pointer",
-  zIndex:10,// gör att böckerna genereras bakom paus knappen och inte täcker den.
+  zIndex: 10,
+  padding: "10px 20px",
+  display: "flex", // Flex för att centrera ikonen
+  justifyContent: "center",
+  alignItems: "center",
+  width: "60px", // Justera storlek på knappen
+  height: "60px", // Justera storlek på knappen
+};
+
+// Stylingen på själva iconen
+const pauseIconStyle = {
+  fontSize: "45px", // Justera storlek på symbolen
+  color: "white", // Vit färg för paus-symbolen
+  textShadow:
+    "2px 2px 0px rgba(0, 0, 0, 0.7), -2px -2px 0px rgba(0, 0, 0, 0.7), 2px -2px 0px rgba(0, 0, 0, 0.7), -2px 2px 0px rgba(0, 0, 0, 0.7)", // Skugga för symbolen
+  //border: "3px solid black", // Svart ytterkant (border) på symbolen
+  padding: "5px", // Lägger till padding för att ge utrymme till ytterkanten
 };
 
 const playerStyle = {
@@ -441,7 +454,8 @@ const scoreStyle = {
   fontWeight: "bold",
   fontFamily: "PixelFont",
   color: "white",
-  textShadow: "2px 2px 0px rgba(0, 0, 0, 0.7), -2px -2px 0px rgba(0, 0, 0, 0.7), 2px -2px 0px rgba(0, 0, 0, 0.7), -2px 2px 0px rgba(0, 0, 0, 0.7)",// shadow och outline för score och time
+  textShadow:
+    "2px 2px 0px rgba(0, 0, 0, 0.7), -2px -2px 0px rgba(0, 0, 0, 0.7), 2px -2px 0px rgba(0, 0, 0, 0.7), -2px 2px 0px rgba(0, 0, 0, 0.7)", // shadow och outline för score och time
   marginBottom: "10px", // Lägg till lite mellanrum
 };
 
