@@ -77,12 +77,12 @@ function GameScreen() {
               ...book,
               position: {
                 x: book.position.x,
-                y: book.position.y + 1,
+                y: book.position.y + 0.5, // Ändra siffran för att välja hur snabbt börckerna rör sig nedåt
               },
             };
           })
         );
-      }, 100);
+      }, 100); // // Denna intervall definierar hastigheten (100 ms)
       return () => clearInterval(interval);
     }
   }, [isPaused]);
