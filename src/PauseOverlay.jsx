@@ -22,7 +22,7 @@ function PauseOverlay({ onClose, onEndGame }) {
         <button style={buttonStyle} className="buttons" onClick={onClose}>
           Continue
         </button>
-        <button style={buttonStyle} className="buttons" onClick={onEndGame}>
+        <button style={quitStyle} className="buttons" onClick={onEndGame}>
           Quit
         </button>
       </div>
@@ -64,7 +64,7 @@ const gamePausedStyle = {
   margin: "20px",
 };
 
-// Stil för knappar
+// Stil för continue knappen
 const buttonStyle = {
   fontFamily: "PixelFont",
   margin: "10px",
@@ -76,5 +76,16 @@ const buttonStyle = {
   border: "none",
   borderRadius: "4px",
 };
-
+//Stil för quit kanppen
+const quitStyle = {
+  fontFamily: "PixelFont",
+  margin: "10px",
+  padding: "10px 20px",
+  fontSize: "25px",
+  cursor: "pointer",
+  backgroundColor: "red",
+  color: "white",
+  border: "none",
+  borderRadius: "4px",
+};
 export default PauseOverlay;
