@@ -87,9 +87,9 @@ function GameScreen() {
     }
   }, [isPaused]);
 
-  //Navigera till endscreen om spelaren missar mer än 45 böcker( Det är många böcker man missar men vi kan minska antalet liteee om ni vill)
+  //Navigera till endscreen om spelaren missar mer än 25 böcker( Det är många böcker man missar men vi kan minska antalet liteee om ni vill)
   useEffect(() => {
-    if (missedBooks > 45) {
+    if (missedBooks > 20) {
       handleEndGame(); // Navigate to the end screen
     }
   }, [missedBooks]);
