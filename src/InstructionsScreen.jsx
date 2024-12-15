@@ -30,7 +30,7 @@ function InstructionsOverlay({ onClose }) {
         {/*Instruktionerna är tillfälliga men jag har stylat dem lite*/}
         <h2 style={titleStyle}>Game Instructions</h2>
         <div>
-          <div style={instStyle}>Shoot as many books as fast as you can. if you miss 50 books or more, you lose. </div>
+          <div style={instStyle}>Shoot as many books as fast as you can. if you miss 25 books or more, you lose. </div>
           <div style={instStyle}>
             To Shoot: Use the upper arrow ⬆️ or the spacebar 𓈙{" "}
           </div>

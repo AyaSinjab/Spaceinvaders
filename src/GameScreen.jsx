@@ -89,7 +89,7 @@ function GameScreen() {
 
   //Navigera till endscreen om spelaren missar mer än 25 böcker( Det är många böcker man missar men vi kan minska antalet liteee om ni vill)
   useEffect(() => {
-    if (missedBooks > 50) {
+    if (missedBooks > 25) {
       handleEndGame(); // Navigate to the end screen
     }
   }, [missedBooks]);
